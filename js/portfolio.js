@@ -1,19 +1,17 @@
 (function () {
 
     'use strict';
-    console.log("test")
 
     // FILE Variables
     let artistUid = CONFIG.uid;
     let baseUrl = '';
+    let pieceId;
 
     CONFIG.copy._headerFooterComponents();
 
 
     // START Program
     getAndUpdatePostDetails();
-
-
 
     // SETUP Event Listeners
     $('.buy').click(function() {
@@ -23,13 +21,14 @@
     $('.purchaseFormSubmit').click(function() {
 
         if($('#formPhone').val().length < 10) {
-            alert('The phone number must be ')
+            alert('The phone number must be 10 digits.')
         } else {
             let purchaseForm = {
                 name: $('#formName').val(),
                 phone: $('#formPhone').val(),
                 email: $('#formEmail').val(),
-                artistUid: artistUid
+                artistUid: artistUid,
+                pieceId: pieceId
             }
 
             console.log(purchaseForm);
@@ -38,7 +37,7 @@
                 console.log(status)
                 if(status === 'success') {
                     cleanForm()
-                    alert('Thanks! We\'ll contact you shortly');
+                    alert('Thanks! We\'ll contact you shortly.');
                 }
             })
 
@@ -46,13 +45,13 @@
         
     })
 
-
     // All Functions
     function getAndUpdatePostDetails() {
         if(CONFIG.baseUrl) {
             baseUrl = CONFIG.baseUrl;
             $.get(baseUrl + '/getArtistsPosts?uid=' + artistUid,function(data, status) {
                 let id = getUrlParameter('id');
+                pieceId = id;
                 console.log(data[id])
 
                 $('#pieceName').text(data[id].pieceName)
